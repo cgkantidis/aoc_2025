@@ -58,11 +58,13 @@ public:
   }
   Matrix &
   operator=(Matrix &&other) noexcept {
+    if (this == &other) {
+      return *this;
+    }
     m_rows = other.m_rows;
     m_cols = other.m_cols;
     delete[] m_data;
-    m_data = new T[m_rows * m_cols];
-    std::copy_n(other.m_data, other.m_rows * other.m_cols, m_data);
+    m_data = other.m_data;
     other.reset();
     return *this;
   }
