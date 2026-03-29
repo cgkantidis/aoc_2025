@@ -1,5 +1,5 @@
 if(CMAKE_CONFIGURATION_TYPES)
-  list(APPEND CMAKE_CONFIGURATION_TYPES ASAN MSAN TSAN UBSAN PROFILE HEAP)
+  list(APPEND CMAKE_CONFIGURATION_TYPES ASAN MSAN TSAN UBSAN PROFILE HEAP PERF)
     list(REMOVE_DUPLICATES CMAKE_CONFIGURATION_TYPES)
     set(CMAKE_CONFIGURATION_TYPES "${CMAKE_CONFIGURATION_TYPES}" CACHE STRING
         "Add the configurations that we need"
@@ -46,7 +46,8 @@ target_compile_options(sanitizer_options INTERFACE
     $<$<CONFIG:TSAN>:-fsanitize=thread -fno-inline -g -O1>
     $<$<CONFIG:UBSAN>:-fsanitize=undefined,bounds -g -O1>
     $<$<CONFIG:PROFILE>:-g -O1>
-    $<$<CONFIG:HEAP>:-g -O1>)
+    $<$<CONFIG:HEAP>:-g -O1>
+    $<$<CONFIG:PERF>:-DNDEBUG -g -O1 -fno-omit-frame-pointer>)
 
 target_link_options(sanitizer_options INTERFACE
   $<$<CONFIG:ASAN>:-fsanitize=address>
